@@ -20,7 +20,7 @@ void gotoxy(int x, int y) {
 
 
 void gotoxy(short x, short y) {
-    if (y>=0 && y<=7)
+    if (y>=0 && y<=5)
         SetConsoleCursorPosition(GetStdHandle(cursor), {x, y});
 }
 void colorize(int k) {
@@ -36,7 +36,7 @@ int main()
 {   
     SetConsoleTextAttribute(hConsole, 15+0*16);
     system("cls");
-    int pos = 5, i;
+    int pos = 4, i;
     char list[][12] = { "List Item 1", "List Item 2", "List Item 3", "List Item 4", "List Item 5"};
     
     for ( i = 0; i<5; i++)

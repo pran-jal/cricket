@@ -5,18 +5,18 @@
 
 
 #include "Cricket.h"
-#include<process.h>
-#include<fstream>
-#include<Windows.h>
-#include<windows.h>
-#include<dos.h>
-#include<conio.h>
-#include<stdio.h>
-#include<random>
-#include<string.h>
-#include<process.h>
-#include<stdlib.h>
-#include<ctype.h>
+#include <process.h>
+#include <fstream>
+#include <Windows.h>
+#include <windows.h>
+#include <dos.h>
+#include <conio.h>
+#include <stdio.h>
+#include <random>
+#include <string.h>
+#include <process.h>
+#include <stdlib.h>
+#include <ctype.h>
 #include <chrono>
 #include <thread>
 
