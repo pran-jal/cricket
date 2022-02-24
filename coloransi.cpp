@@ -6,6 +6,6 @@ using namespace ansi;
 
 int main(int argc, char const *argv[])
 {
-    cout << red << " FOO BAR " << reset;
+    cout << foreground::red << " FOO BAR " << reset;
     return 0;
 }

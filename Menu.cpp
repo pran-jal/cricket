@@ -5,7 +5,8 @@
 #include <conio.h>
 #include <windows.h>
 
-#define STD_OUTPUT_HANDLE (DWORD) -11
+#define cursor (DWORD) -11
+HANDLE hConsole = GetStdHandle(cursor);
 
 using namespace std;
 
@@ -14,40 +15,66 @@ void gotoxy(int x, int y) {
     coord.X = x;
     coord.Y = y;
     if (y>=0 && y<=7)
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-*/
+        SetConsoleCursorPosition(GetStdHandle(cursor), coord);
+} */
+
 
 void gotoxy(short x, short y) {
     if (y>=0 && y<=7)
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {x, y});
+        SetConsoleCursorPosition(GetStdHandle(cursor), {x, y});
 }
+void colorize(int k) {
+    // colorattribute = foreground + background * 16
+    // to get red text on yellow use 4 + 14*16 = 228
+    // light red on yellow would be 12 + 14*16 = 236
+    FlushConsoleInputBuffer(hConsole);
+    SetConsoleTextAttribute(hConsole, k);
+}
+
 // Driver Code
 int main()
 {   
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    int def = 15, sel = 12, pos =0 ;
-
-    char a[][12] = { "List Item 1", "List Item 2", "List Item 3", "List Item 4", "List Item 5", "List Item 6", "List Item 7" };
+    SetConsoleTextAttribute(hConsole, 15+0*16);
+    system("cls");
+    int pos = 5, i;
+    char list[][12] = { "List Item 1", "List Item 2", "List Item 3", "List Item 4", "List Item 5"};
     
-    FlushConsoleInputBuffer(hConsole);
-    int i;
+    for ( i = 0; i<5; i++)
+        cout << list[i] << endl;
 
-    for ( i = 0; i<7; i++)
-        std::cout << a[i] << endl;
     while (1) {
         unsigned char c = _getch();
         if (c == 27)
             break;
+
         else {
             c = _getch();            // arrow key input comes in  two parts 1->0XE0, 2->value
-            if (c == 'P')            // p down
-                gotoxy(0,++pos);
+			if (c == 'P') {          // P down 80, 50
+                if (pos < 4) {
+                	gotoxy(0, pos);
+                	cout << list[pos];
+					pos++;
+				}
+                gotoxy(0,pos);
+				colorize(0+15*16);
+				cout << list[pos];
+                colorize(15);
 
-            else if (c == 'H')         // h up
-                gotoxy(0,--pos);
-        }
+            }
+            else if (c == 'H') {        // H up, 72, 48
+				if (pos > 0) { 
+                	gotoxy(0, pos);
+                	cout << list[pos];
+					pos--;
+				}
+				gotoxy(0, pos);
+				colorize(0+15*16);
+				cout << list[pos];
+                colorize(15);
+        	}
+		}
+        								// left		75 K 4b
+										//right		77 M 4d
     }
-
     return 0;
 }
