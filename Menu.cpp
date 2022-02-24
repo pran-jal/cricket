@@ -1,56 +1,56 @@
-// C++ program to illustrate coloring
+#include <fstream>
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include <windows.h>
+
+using namespace std;
 
 #define cursor (DWORD) -11
 HANDLE hConsole = GetStdHandle(cursor);
 
-using namespace std;
-
-/* COORD coord = { 0,0 }; // this is global variable                                 
-void gotoxy(int x, int y) {
-    coord.X = x;
-    coord.Y = y;
-    if (y>=0 && y<=7)
-        SetConsoleCursorPosition(GetStdHandle(cursor), coord);
-} */
-
-
 void gotoxy(short x, short y) {
-    if (y>=0 && y<=5)
+    if (y>=0 && y<=28)
         SetConsoleCursorPosition(GetStdHandle(cursor), {x, y});
 }
 void colorize(int k) {
-    // colorattribute = foreground + background * 16
-    // to get red text on yellow use 4 + 14*16 = 228
-    // light red on yellow would be 12 + 14*16 = 236
     FlushConsoleInputBuffer(hConsole);
     SetConsoleTextAttribute(hConsole, k);
 }
 
-// Driver Code
 int main()
 {   
+    system("dir /B >> ls.txt");
+
+    char p[100];
+    char list[27][100];
+    int i = 0;
+    ifstream f("ls.txt", ios::in) ;
+    while (!f.eof() ) {
+        f.getline((char *)&p, 100*sizeof(char));
+        strcpy(list[i], p);
+        i++;
+    }
+    f.close();
+    system("del ls.txt");
+    int n = i-1;
     SetConsoleTextAttribute(hConsole, 15+0*16);
+    int pos = n;
     system("cls");
-    int pos = 4, i;
-    char list[][12] = { "List Item 1", "List Item 2", "List Item 3", "List Item 4", "List Item 5"};
-    
-    for ( i = 0; i<5; i++)
+    for ( i = 0; i<n; i++)
         cout << list[i] << endl;
 
     while (1) {
         unsigned char c = _getch();
-        if (c == 27)
+        if (c == 27) {
             break;
-
+        }
         else {
             c = _getch();            // arrow key input comes in  two parts 1->0XE0, 2->value
 			if (c == 'P') {          // P down 80, 50
-                if (pos < 4) {
+                if (pos < n) {
                 	gotoxy(0, pos);
                 	cout << list[pos];
 					pos++;
